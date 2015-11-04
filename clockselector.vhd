@@ -6,8 +6,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity clockSelector is
     port(
-        signal TGL      : in std_logic;
-        signal CLK      :
+        signal TGL, CLK : in std_logic;
+        signal CLKOUT   : out std_logic
         );
 end clockSelector
 
