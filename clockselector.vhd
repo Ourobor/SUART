@@ -13,7 +13,25 @@ end clockSelector
 
 architecture Struct of clockSelector is
     
+component shift is
+    
+    port(   
+    CLK         : in std_logic;
+    SIN         : in std_logic;
+    Y           : out std_logic_vector(7 downto 0));
+
+end component;
+
+component twotoonemux is
+
+    port(
+    signal X1, X2, S    : in Std_logic;
+    signal Y            : out Std_logic);
+
+end component;
+
 begin
 
+    
 end Struct;
 
