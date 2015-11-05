@@ -30,11 +30,10 @@ component twotoonemux is
 
 end component;
 
-signal muxSelect, mux1out, CLK_Selected, CLK_Selected_Not, shift1out : std_logic;
+signal muxSelect, mux1out, CLK_Selected, shift1out : std_logic;
 signal dummy1, dummy2 : std_logic_vector(7 downto 0);
 
 begin
-    CLK_Selected_Not <= not CLK_Selected;
     CLKOUT <= CLK_Selected; -- hook up the output pin and we should be done!
 
     mux1 : twotoonemux
