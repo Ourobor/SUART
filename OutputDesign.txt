@@ -1,0 +1,29 @@
+            +---------------------------------------------------------------+
+            |                                       +--------------+        |
+SIN +       |      SUART Output                     |Shift Register|        |   SOUT
+    |       |                                       |              |        |    +
+    +-----------------------------------------------+SIN         Q1|        |    |
+            |                                       |              |        |    |
+            |        +--------------+         +-----+CLK         Q2|        |    |
+            |        |Clock Selector|         |     |              |        |    |
+            |        |              |         |     |            Q3|        |    |
+TGL +----------------+TGL     CLKOUT+---------+     |              |        |    |
+            |        |              |               |            Q4|        |    |
+            |     +--+CLK           |               |              |        |    |
+            |     |  +--------------+               |            Q5|        |    |
+            |     |                                 |              |        |    |
+            |     |                                 |            Q6|        |    |
+            |     +---------------------+           |              |        |    |
+            |                           |           |            Q7|        |    |
+            |         +-------------+   |           |              |        |    |
+            |         |Baud Clock   |   |           |            Q8+-------------+
+            |         |             |   |           +--------------+        |
+            |         |          CLK+---+                                   |
+            |         |             |                                       |
+            |         +-------------+                                       |
+            +---------------------------------------------------------------+
+
+
+The basic idea is to use a shift register to output our data. The clock selector switches modes every X(X is the number of bits in the packet) characters, outputting either TGL or CLK. This allows us to load into the shift register at whatever speed we want with TGL and once we finish loading, the baud clock takes over and shifts them out at the approprate baud rate.
+
+Thus the uC only needs two lines to output data and it doesn't need a solid clock source because it can take as long as it wants.
