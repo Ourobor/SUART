@@ -30,8 +30,8 @@ component twotoonemux is
 
 end component;
 
-signal muxSelect, mux1out, CLK_Selected, CLK_Selected_Not : std_logic;
-signal dummy : std_logic_vector(7 downto 1);
+signal muxSelect, mux1out, CLK_Selected, CLK_Selected_Not, shift1out : std_logic;
+signal dummy1, dummy2 : std_logic_vector(7 downto 0);
 
 begin
     CLK_Selected_Not <= not CLK_Selected;
@@ -49,9 +49,17 @@ begin
         SIN => mux1out,
         CLK => CLK_Selected_Not, --this register is counting up for us every time we add a character, so we want it to finish when we release tgl, 
                             --not when we just added a bit to data
-        Y(0) => muxSelect,
-        Y(7 downto 1) => dummy); --modelsim whines if these aren't connected to at least something >.>
+        Y(0) => shift1out,
+        Y(7 downto 1) => dummy1); --modelsim whines if these aren't connected to at least something >.>
 
+    shift2 : shift
+    port map(
+            SIN => shift1out,
+            CLK => CLK_Selected_Not,
+            Y(5) => muxSelect,
+            Y(7) => dummy2(7),
+            Y(6) => dummy2(6),
+            y(4 downto 0) => dummy(4 downto 0));
 
     mux2 : twotoonemux
     port map(
