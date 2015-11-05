@@ -9,7 +9,7 @@ entity clockSelector is
         signal TGL, CLK : in std_logic;
         signal CLKOUT   : out std_logic
         );
-end clockSelector
+end clockSelector;
 
 architecture Struct of clockSelector is
     
@@ -30,8 +30,35 @@ component twotoonemux is
 
 end component;
 
-begin
+signal muxSelect, mux1out, CLK_Selected, CLK_Selected_Not : std_logic;
+signal dummy : std_logic_vector(7 downto 1);
 
-    
+begin
+    CLK_Selected_Not <= not CLK_Selected;
+    CLKOUT <= CLK_Selected; -- hook up the output pin and we should be done!
+
+    mux1 : twotoonemux
+    port map(
+        X1 => '1',
+        X2 => '0',
+        S => muxSelect,
+        Y => mux1out);
+
+    shift1 : shift
+    port map(
+        SIN => mux1out,
+        CLK => CLK_Selected_Not, --this register is counting up for us every time we add a character, so we want it to finish when we release tgl, 
+                            --not when we just added a bit to data
+        Y(0) => muxSelect,
+        Y(7 downto 1) => dummy); --modelsim whines if these aren't connected to at least something >.>
+
+
+    mux2 : twotoonemux
+    port map(
+        X1 => TGL,
+        X2 => CLK,
+        S => muxSelect,
+        Y => CLK_Selected);
+		  
 end Struct;
 
