@@ -1,0 +1,36 @@
+
+
+     +------------+           1010 from count
+     |TGL Selected+-------------------------+
+     |            |                         |
+     |   (0)      |                   +-----v--------+
+     +------------+                   |Transistioning|
+          ^                           |To BCLK       |
+          |                           |    (0)       |
+          |                           +-------+------+
+          |                                   |
+          |                                   |
+          |                                   |BCLK High
+          |                                   |
+          |                                   |
+          |                               +---v---------+
+          |                               |BCLK Selected|
+          |                               |             |
+          +-------------------------------+     (1)     |
+                  1010 from count         +-------------+
+
+
+An idea for a different way of selecting CLKOUT: use a state machine to switch to a transistion state which waits for BCLK to go high
+so there aren't any glitches when we switch from TGL when BCLK happens to be low. A transistion state shouldn't be needed for TGL
+since we could just leave that line high until we want to send another character. The downside to this is that we need to buy more chips,
+at least a memory cell of some kind, and at least one NOR or NAND chip(though probably more) and a counter of some kind. I could maybe 
+build the counter out of memory though. Hmmm
+
+
+State Transition Table:
+
+Count       BCLK       State| Next State
+----------------------------+----
+    1       X           S1  | S2
+    X       1           S2  | S3
+    1       X           S3  | S1
